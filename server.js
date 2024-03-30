@@ -1,5 +1,5 @@
 // Import the Express app from app.js
-const app = require('./app');
+const app = require("./app");
 
 // Define the port number
 const PORT = process.env.PORT || 3000;
