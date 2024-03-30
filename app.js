@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import organizerRoutes from "./routes/organizer.routes.js";
 const app = express();
 // for body parser
 app.use(express.json());
@@ -13,5 +14,6 @@ app.get("/", (req, res) => {
   res.send("HLO");
 });
 
-
+//Routes
+app.use("/api/shiny-barnacle/organizer", organizerRoutes);
 export default app;

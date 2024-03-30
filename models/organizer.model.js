@@ -26,6 +26,7 @@ const organizerSchema = new Schema(
   { timestamps: true }
 );
 organizerSchema.pre("save", async function (next) {
+    // Hash the password before saving the organizer model only when the password is modified or new
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
