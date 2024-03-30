@@ -61,6 +61,7 @@ const registerOrganizer = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, createdOrganizer, "Organizer created successfully"));
   });
   
+  // login Organizer
   const loginOrganizer = asyncHandler(async (req, res) => {
     //get Organizer details from frontend
     const { email, password } = req.body;

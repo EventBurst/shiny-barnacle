@@ -6,7 +6,7 @@ const router = Router();
 router.get("/get-all",getOrganizers);
 //create Organizer
 router.post("/create",registerOrganizer);
-// //login Organizer
+// created login Organizer
 router.post("/login",loginOrganizer);
 
 export default router;
