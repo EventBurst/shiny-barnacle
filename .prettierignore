@@ -1,0 +1,8 @@
+*.env
+.env
+.env.*
+.swagger.yaml
+
+/.vscode
+/node_modules
+./dist

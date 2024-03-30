@@ -4,9 +4,13 @@
   "description": "A simple Express.js application",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "prettier": "^3.1.1"
   }
 }
