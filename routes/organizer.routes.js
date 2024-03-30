@@ -8,5 +8,6 @@ router.get("/get-all",getOrganizers);
 router.post("/create",registerOrganizer);
 // created login Organizer
 router.post("/login",loginOrganizer);
-
+// refresh access token
+router.route("/refresh-token").post(refreshAccessToken);
 export default router;
