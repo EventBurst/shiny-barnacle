@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getOrganizers, loginOrganizer, registerOrganizer } from "../controllers/organizer.controller.js";
+import { getOrganizers, loginOrganizer, registerOrganizer,refreshAccessToken } from "../controllers/organizer.controller.js";
 const router = Router();
 
 //get all Organizers

@@ -107,4 +107,44 @@ const registerOrganizer = asyncHandler(async (req, res) => {
               )
             );
   });
-  export { registerOrganizer, getOrganizers,loginOrganizer};
+  const refreshAccessToken = asyncHandler(async (req, res) => {
+    //get refresh token from organizer
+    const incomingRefershToken =
+      req.cookies.refreshToken || req.body.refreshToken;
+    if (!incomingRefershToken) throw new ApiError(401, "Unauthorized request");
+    // decode  token
+    const decoded = jwt.verify(
+      incomingRefershToken,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+    const organizer = await Organizer.findById(decoded?._id);
+    if (!organizer) {
+      throw new ApiError(401, "Invalid Refresh Token");
+    }
+    // verify token with the token stored in the organizer db
+    if (organizer.refreshToken !== incomingRefershToken) {
+      throw new ApiError(401, "Invalid Refresh Token");
+    }
+    // if valid, generateAccessAndRefreshToken
+    const { accessToken, refreshToken } =
+      await generateAccessAndRefreshToken(organizer);
+    // send cookies response to the organizer
+    const options = {
+      httpOnly: true,
+      secure: true,
+    };
+    return res
+      .status(200)
+      .cookie("accessToken", accessToken, options)
+      .cookie("refreshToken", refreshToken, options)
+      .json(
+        new ApiResponse(
+          200,
+          { accessToken, refreshToken },
+          "Access Token Refreshed Successfully"
+        )
+      );
+  });
+  
+  
+  export { registerOrganizer, getOrganizers,loginOrganizer,refreshAccessToken};
