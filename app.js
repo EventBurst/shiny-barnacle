@@ -1,13 +1,17 @@
-// Import the Express.js library
-const express = require('express');
-
-// Create an instance of Express
+import express from "express";
+import cors from "cors";
 const app = express();
-
-// Define a route that responds with "Hello, World!" when accessed
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+// for body parser
+app.use(express.json());
+//for url params
+app.use(express.urlencoded({ extended: true }));
+//for image,files
+app.use(express.static("public"));
+app.use(cors());
+//Server Working
+app.get("/", (req, res) => {
+  res.send("HLO");
 });
 
-// Export the Express app instance
-module.exports = app;
+
+export default app;
