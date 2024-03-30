@@ -1,0 +1,12 @@
+{
+  "name": "express-app",
+  "version": "1.0.0",
+  "description": "A simple Express.js application",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
