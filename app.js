@@ -8,6 +8,9 @@ const app = express();
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
-
+// Test Api
+app.get('/test', (req, res) => {
+  res.send('Test');
+});
 // Export the Express app instance
 module.exports = app;
