@@ -5,3 +5,81 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8002
+paths:
+  /get-all:
+    get:
+      summary: Get all agendas
+      responses:
+        "200":
+          description: A list of all agendas
+  /create:
+    post:
+      summary: Create a new agenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Agenda"
+      responses:
+        "200":
+          description: Agenda created successfully
+        "400":
+          description: Bad request
+  /update/{id}:
+    put:
+      summary: Update an agenda
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the agenda to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Agenda"
+      responses:
+        "200":
+          description: Agenda updated successfully
+        "400":
+          description: Bad request
+  /delete/{id}:
+    delete:
+      summary: Delete an agenda
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the agenda to delete
+      responses:
+        "200":
+          description: Agenda deleted successfully
+        "400":
+          description: Bad request
+components:
+  schemas:
+    Agenda:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the agenda.
+        description:
+          type: string
+          description: The description of the agenda.
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the agenda.
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the agenda.
