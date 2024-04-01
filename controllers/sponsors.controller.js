@@ -43,6 +43,18 @@ const updateSponsor = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse("Sponsor updated successfully", sponsor));
 });
 
+//Delete a sponsor
+const deleteSponsor = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ApiError("Invalid Sponsor ID", 400));
+  }
+  const sponsor = await Sponsor.findByIdAndDelete(id);
+  if (!sponsor) {
+    return next(new ApiError("Sponsor not found", 404));
+  }
+  res.status(200).json(new ApiResponse("Sponsor deleted successfully", sponsor));
+});
 
 // Exporting the functions
-export {getAllSponsors, createSponsor, updateSponsor};
+export {getAllSponsors, createSponsor, updateSponsor, deleteSponsor};
