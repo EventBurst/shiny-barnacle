@@ -13,6 +13,20 @@ const getAllSponsors = asyncHandler(async (req, res, next) => {
   res.status(200).json(new ApiResponse("Sponsors fetched successfully", sponsors));
 });
 
+// create a new sponsor
+const createSponsor = asyncHandler(async (req, res, next) => {
+    const {name,email,phoneNumber, address, contribution }= req.body;
+    if (
+        [name,email,phoneNumber,address].some((value) => value.trim() === "")
+      ) {
+        throw new ApiError(400, "All Fields are required");
+      }
+  const sponsor = await Sponsor.create(req.body);
+  if (!sponsor) {
+    return next(new ApiError("Sponsor could not be created", 400));
+  }
+  res.status(201).json(new ApiResponse("Sponsor created successfully", sponsor));
+});
 
 
-export {getAllSponsors};
+export {getAllSponsors, createSponsor};
