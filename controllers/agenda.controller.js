@@ -1,7 +1,7 @@
-import { Agenda } from "./agenda.controller.js";
-import { asyncHandler } from "../utils/asyncHandler";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
+import { Agenda } from "../models/agenda.model.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 import mongoose from "mongoose";
 
 // get all agendas
