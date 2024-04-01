@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import organizerRoutes from "./routes/organizer.routes.js";
+import speakerRoutes from "./routes/speaker.routes.js";
 const app = express();
 // for body parser
 app.use(express.json());
@@ -19,4 +20,5 @@ app.get("/", (req, res) => {
 
 //Routes
 app.use("/api/shiny-barnacle/organizer", organizerRoutes);
+app.use("/api/shiny-barnacle/speaker", speakerRoutes);
 export default app;
