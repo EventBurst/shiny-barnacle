@@ -37,5 +37,11 @@ const updateSpeaker=asyncHandler(async(req,res)=>{
   return res.status(200).json(new ApiResponse(200,speaker,"Speaker updated successfully"));
 }) 
 
+// delete a Speaker
+const deleteSpeaker=asyncHandler(async(req,res)=>{
+  const speaker=await Speaker.findByIdAndDelete(req.params.id);
+  if(!speaker) throw new ApiError(400,"Speaker could not be deleted");
+  return res.status(200).json(new ApiResponse(200,speaker,"Speaker deleted successfully"));
+})
 // Exporting the functions
-  export {getSpeakers, createSpeaker, updateSpeaker};
+export {getSpeakers, createSpeaker, updateSpeaker,deleteSpeaker};
