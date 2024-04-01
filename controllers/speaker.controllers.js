@@ -24,4 +24,18 @@ const createSpeaker=asyncHandler(async(req,res)=>{
   return res.status(201).json(new ApiResponse(201,speaker,"Speaker created successfully"));
 
 })
-  export {getSpeakers, createSpeaker};
+// update a Speaker
+const updateSpeaker=asyncHandler(async(req,res)=>{
+  const {name,email,phoneNumber}=req.body;
+  if (
+    [name,email,phoneNumber].some((value) => value.trim() === "")
+  ) {
+    throw new ApiError(400, "All Fields are required");
+  }
+  const speaker=await Speaker.findByIdAndUpdate(req.params.id,{name,email,phoneNumber},{new:true});
+  if(!speaker) throw new ApiError(400,"Speaker could not be updated");
+  return res.status(200).json(new ApiResponse(200,speaker,"Speaker updated successfully"));
+}) 
+
+// Exporting the functions
+  export {getSpeakers, createSpeaker, updateSpeaker};
