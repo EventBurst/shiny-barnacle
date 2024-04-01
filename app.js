@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 // Routes
 import organizerRoutes from "./routes/organizer.routes.js";
 import speakerRoutes from "./routes/speaker.routes.js";
+import sponsorRoutes from "./routes/sponsor.routes.js";
 
 // Swagger UI
 import swaggerUi from 'swagger-ui-express'
@@ -29,6 +30,7 @@ app.get("/", (req, res) => {
 //Routes
 app.use("/api/shiny-barnacle/organizer", organizerRoutes);
 app.use("/api/shiny-barnacle/speaker", speakerRoutes);
+app.use("/api/shiny-barnacle/sponsor", sponsorRoutes);
 
 // Swagger UI
 app.use('/api/shiny-barnacle/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
