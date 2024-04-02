@@ -27,6 +27,35 @@ components:
         - name
         - email
 
+    Sponsor:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the sponsor.
+        name:
+          type: string
+          description: The name of the sponsor.
+        email:
+          type: string
+          format: email
+          description: The email address of the sponsor.
+        phoneNumber:
+          type: string
+          description: The phone number of the sponsor.
+        address:
+          type: string
+          description: The address of the sponsor.
+        contribution:
+          type: number
+          description: The contribution amount of the sponsor.
+      required:
+        - name
+        - email
+        - phoneNumber
+        - address
+        - contribution
+
 paths:
   /api/shiny-barnacle/speaker/get-all:
     get:
@@ -115,3 +144,91 @@ paths:
           description: Invalid speaker ID
         '404':
           description: Speaker not found
+
+  /api/shiny-barnacle/sponsor/get-all:
+    get:
+      summary: Get all sponsors
+      description: Retrieve a list of all sponsors.
+      responses:
+        '200':
+          description: A list of sponsors successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sponsor'
+        '404':
+          description: No sponsors found
+
+  /api/shiny-barnacle/sponsor/create:
+    post:
+      summary: Create a new sponsor
+      description: Add a new sponsor to the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sponsor'
+      responses:
+        '201':
+          description: Sponsor created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sponsor'
+        '400':
+          description: Invalid request body or missing required fields
+
+  /api/shiny-barnacle/sponsor/update/{id}:
+    put:
+      summary: Update a sponsor
+      description: Update an existing sponsor's details.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the sponsor to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sponsor'
+      responses:
+        '200':
+          description: Sponsor updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sponsor'
+        '400':
+          description: Invalid request or sponsor ID
+        '404':
+          description: Sponsor not found
+
+  /api/shiny-barnacle/sponsor/delete/{id}:
+    delete:
+      summary: Delete a sponsor
+      description: Delete an existing sponsor from the system.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the sponsor to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Sponsor deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Sponsor'
+        '400':
+          description: Invalid sponsor ID
+        '404':
+          description: Sponsor not found
