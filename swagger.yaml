@@ -5,3 +5,113 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8002
+components:
+  schemas:
+    Speaker:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the speaker.
+        name:
+          type: string
+          description: The name of the speaker.
+        email:
+          type: string
+          format: email
+          description: The email address of the speaker.
+        phoneNumber:
+          type: string
+          description: The phone number of the speaker.
+      required:
+        - name
+        - email
+
+paths:
+  /api/shiny-barnacle/speaker/get-all:
+    get:
+      summary: Get all speakers
+      description: Retrieve a list of all speakers.
+      responses:
+        '200':
+          description: A list of speakers successfully retrieved
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Speaker'
+        '404':
+          description: No speakers found
+
+  /api/shiny-barnacle/speaker/create:
+    post:
+      summary: Create a new speaker
+      description: Add a new speaker to the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Speaker'
+      responses:
+        '201':
+          description: Speaker created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Speaker'
+        '400':
+          description: Invalid request body or missing required fields
+
+  /api/shiny-barnacle/speaker/update/{id}:
+    put:
+      summary: Update a speaker
+      description: Update an existing speaker's details.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the speaker to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Speaker'
+      responses:
+        '200':
+          description: Speaker updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Speaker'
+        '400':
+          description: Invalid request or speaker ID
+        '404':
+          description: Speaker not found
+
+  /api/shiny-barnacle/speaker/delete/{id}:
+    delete:
+      summary: Delete a speaker
+      description: Delete an existing speaker from the system.
+      parameters:
+        - in: path
+          name: id
+          description: ID of the speaker to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Speaker deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Speaker'
+        '400':
+          description: Invalid speaker ID
+        '404':
+          description: Speaker not found
