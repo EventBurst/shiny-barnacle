@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:8002
+
 components:
   schemas:
     Speaker:
@@ -56,21 +57,39 @@ components:
         - address
         - contribution
 
+    Agenda:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the agenda.
+        description:
+          type: string
+          description: The description of the agenda.
+        startTime:
+          type: string
+          format: date-time
+          description: The start time of the agenda.
+        endTime:
+          type: string
+          format: date-time
+          description: The end time of the agenda.
+
 paths:
   /api/shiny-barnacle/speaker/get-all:
     get:
       summary: Get all speakers
       description: Retrieve a list of all speakers.
       responses:
-        '200':
+        "200":
           description: A list of speakers successfully retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Speaker'
-        '404':
+                  $ref: "#/components/schemas/Speaker"
+        "404":
           description: No speakers found
 
   /api/shiny-barnacle/speaker/create:
@@ -82,15 +101,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Speaker'
+              $ref: "#/components/schemas/Speaker"
       responses:
-        '201':
+        "201":
           description: Speaker created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Speaker'
-        '400':
+                $ref: "#/components/schemas/Speaker"
+        "400":
           description: Invalid request body or missing required fields
 
   /api/shiny-barnacle/speaker/update/{id}:
@@ -109,17 +128,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Speaker'
+              $ref: "#/components/schemas/Speaker"
       responses:
-        '200':
+        "200":
           description: Speaker updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Speaker'
-        '400':
+                $ref: "#/components/schemas/Speaker"
+        "400":
           description: Invalid request or speaker ID
-        '404':
+        "404":
           description: Speaker not found
 
   /api/shiny-barnacle/speaker/delete/{id}:
@@ -134,15 +153,15 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Speaker deleted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Speaker'
-        '400':
+                $ref: "#/components/schemas/Speaker"
+        "400":
           description: Invalid speaker ID
-        '404':
+        "404":
           description: Speaker not found
 
   /api/shiny-barnacle/sponsor/get-all:
@@ -150,15 +169,15 @@ paths:
       summary: Get all sponsors
       description: Retrieve a list of all sponsors.
       responses:
-        '200':
+        "200":
           description: A list of sponsors successfully retrieved
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Sponsor'
-        '404':
+                  $ref: "#/components/schemas/Sponsor"
+        "404":
           description: No sponsors found
 
   /api/shiny-barnacle/sponsor/create:
@@ -170,15 +189,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sponsor'
+              $ref: "#/components/schemas/Sponsor"
       responses:
-        '201':
+        "201":
           description: Sponsor created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sponsor'
-        '400':
+                $ref: "#/components/schemas/Sponsor"
+        "400":
           description: Invalid request body or missing required fields
 
   /api/shiny-barnacle/sponsor/update/{id}:
@@ -197,17 +216,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Sponsor'
+              $ref: "#/components/schemas/Sponsor"
       responses:
-        '200':
+        "200":
           description: Sponsor updated successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sponsor'
-        '400':
+                $ref: "#/components/schemas/Sponsor"
+        "400":
           description: Invalid request or sponsor ID
-        '404':
+        "404":
           description: Sponsor not found
 
   /api/shiny-barnacle/sponsor/delete/{id}:
@@ -222,13 +241,72 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: Sponsor deleted successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Sponsor'
-        '400':
+                $ref: "#/components/schemas/Sponsor"
+        "400":
           description: Invalid sponsor ID
-        '404':
+        "404":
           description: Sponsor not found
+
+  /api/shiny-barnacle/agenda/get-all:
+    get:
+      summary: Get all agendas
+      responses:
+        "200":
+          description: A list of all agendas
+  /api/shiny-barnacle/agenda/create:
+    post:
+      summary: Create a new agenda
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Agenda"
+      responses:
+        "200":
+          description: Agenda created successfully
+        "400":
+          description: Bad request
+  /api/shiny-barnacle/agenda/update/{id}:
+    put:
+      summary: Update an agenda
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the agenda to update
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Agenda"
+      responses:
+        "200":
+          description: Agenda updated successfully
+        "400":
+          description: Bad request
+  /api/shiny-barnacle/agenda/delete/{id}:
+    delete:
+      summary: Delete an agenda
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: ID of the agenda to delete
+      responses:
+        "200":
+          description: Agenda deleted successfully
+        "400":
+          description: Bad request
