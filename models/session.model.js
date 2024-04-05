@@ -16,7 +16,7 @@ const sessionSchema = new Schema({
     type: String,
     required: true,
   },
-  agendaID: {
+  agendaId: {
     type: Schema.Types.ObjectId,
     ref: "Agenda",
     required: true,
