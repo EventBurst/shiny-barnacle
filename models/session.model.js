@@ -8,7 +8,7 @@ const sessionSchema = new Schema({
     ref: "Speaker",
     required: true,
   },
-  sessionName: {
+  name: {
     type: String,
     required: true,
   },

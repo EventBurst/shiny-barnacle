@@ -13,19 +13,16 @@ const getAllSessions = asyncHandler(async (req, res) => {
 
 // Create a new session
 const createSession = asyncHandler(async (req, res) => {
-  const { speakerId, sessionName, description, agendaID } = req.body;
-  if ([speakerId, sessionName, description, agendaID].includes(undefined)) {
-    throw new ApiError("Please provide all the required fields", 400);
-  }
-  const session = await Session.create({
-    _id: new mongoose.Types.ObjectId(),
-    speakerId,
-    sessionName,
-    description,
-    agendaID,
+  const { name, description, speaker } = req.body;
+
+  // Check if speaker is there or not
+  const response = await fetch(process.env.SPEAKER_API_URL + "create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: speaker,
   });
 
-  res.status(201).json(new ApiResponse("success", session));
+  res.status(200).json(new ApiResponse("success", { response }));
 });
 
 // Exporting the functions

@@ -7,6 +7,7 @@ import organizerRoutes from "./routes/organizer.routes.js";
 import speakerRoutes from "./routes/speaker.routes.js";
 import agendaRoutes from "./routes/agenda.routes.js";
 import sponsorRoutes from "./routes/sponsor.routes.js";
+import sessionRoutes from "./routes/session.routes.js";
 
 // Swagger UI
 import swaggerUi from "swagger-ui-express";
@@ -33,6 +34,7 @@ app.use("/api/shiny-barnacle/organizer", organizerRoutes);
 app.use("/api/shiny-barnacle/speaker", speakerRoutes);
 app.use("/api/shiny-barnacle/agenda", agendaRoutes);
 app.use("/api/shiny-barnacle/sponsor", sponsorRoutes);
+app.use("/api/shiny-barnacle/session", sessionRoutes);
 
 // Swagger UI
 app.use(
