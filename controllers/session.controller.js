@@ -4,12 +4,27 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 // get all the sessions
-const getAllSessions = asyncHandler(async (req, res) => {
+const getAllSessions = asyncHandler(async (_, res) => {
   const sessions = await Session.find();
   if (!sessions) throw new ApiError("No sessions found", 404);
   res.status(200).json(new ApiResponse("success", sessions));
 });
 
+// delete a session
+const deleteSession = asyncHandler(async (req, res) => {
+  const session = await Session.findByIdAndDelete(req.params.id);
+  if (!session) throw new ApiError("No session found", 404);
+  res.status(200).json(new ApiResponse("success", "Session Deleted"));
+});
+
+// update a session
+const updateSession = asyncHandler(async (req, res) => {
+  const session = await Session.findByIdAndUpdate(req.params.id, req.body);
+  if (!session) throw new ApiError("No session found", 404);
+  res.status(200).json(new ApiResponse("success", "Session Updated"));
+});
+
+// create a new session
 const createSession = asyncHandler(async (req, res) => {
   const { name, description, speaker, agenda } = req.body;
 
@@ -75,4 +90,4 @@ const createSession = asyncHandler(async (req, res) => {
 });
 
 // Exporting the functions
-export { createSession, getAllSessions };
+export { createSession, getAllSessions, deleteSession, updateSession };
