@@ -20,7 +20,25 @@ const createAgenda = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const agenda = await Agenda.create({ name, description, startTime, endTime });
+  // Check if the agenda already exists
+  const findAgenda = await Agenda.findOne({ name });
+  if (findAgenda) {
+    // If so then return that
+    return res
+      .status(200)
+      .json(new ApiResponse(200, findAgenda, "Agenda already exists"));
+  }
+
+  // Start Date Time
+  const startDateTime = new Date(startTime);
+  const endDateTime = new Date(endTime);
+
+  const agenda = await Agenda.create({
+    name,
+    description,
+    startTime: startDateTime,
+    endTime: endDateTime,
+  });
   if (!agenda) throw new ApiError(400, "Agenda not created");
   return res.status(201).json(new ApiResponse(201, agenda, "Agenda created"));
 });
