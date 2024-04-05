@@ -4,6 +4,7 @@ const agendaSchema = new Schema(
     name: {
       type: String,
       required: true,
+      unique: true,
     },
     description: {
       type: String,
@@ -21,4 +22,3 @@ const agendaSchema = new Schema(
   { timestamps: true }
 );
 export const Agenda = mongoose.model("Agenda", agendaSchema);
-
