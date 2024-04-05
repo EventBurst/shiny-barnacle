@@ -20,13 +20,13 @@ const createSpeaker = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All Fields are required");
   }
 
-  const find = Speaker.findOne({ email });
+  const find = await Speaker.findOne({ email });
 
   if (find) {
     return res.status(200).json(new ApiResponse(200, find, "Speaker found"));
   }
 
-  const speaker = await Speaker.create({ name, email, phoneNumber });
+  const speaker = await Speaker.create(req.body);
   if (!speaker) throw new ApiError(400, "Speaker could not be created");
   return res
     .status(201)
