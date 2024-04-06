@@ -6,11 +6,11 @@ import {Event} from "../models/event.model.js";
 
 
 const createEvent = asyncHandler(async (req, res) => {
-    const {name,description,duration,status,sponsors,sessions,organizer} =req.body;
+    const {name,description,duration,status,sponsors,sessions} =req.body;
     if (
-        [name, description,duration,sponsors,sessions,organizer].some((value) => value.trim() === "")
+        [name, description].some((value) => value.trim() === "")
       ) {
-        throw new ApiError(400, "All Fields are required");
+        throw new ApiError(400, "Name and Description are required");
       }
 
     // get sponsor ids
@@ -19,8 +19,20 @@ const createEvent = asyncHandler(async (req, res) => {
     // get session ids
      const sessionIds= await  getSessionId(sessions);
     
+    // create event
+    console.log("organizer: ",req.organizer?._id)
+    const event = await Event.create({
+        name,
+        description,
+        duration,
+        status,
+        sponsors:sponsorIds,
+        sessions:sessionIds,
+        organizer: req.organizer?._id
+    });
 
-    res.status(201).json(new ApiResponse(201,sessionIds ,"Event under creation"));
+    if(!event) throw new ApiError(400, "Event not created");
+    res.status(201).json(new ApiResponse(201, event,"Event created"));
     });
 
     const getSponsorId = async (sponsors) => {
