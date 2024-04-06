@@ -137,4 +137,20 @@ const updateEvent = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, event, "Event updated"));
 });
 
-export { createEvent, getOrganizerEvents, getEventById, updateEvent};
+// delete event
+const deleteEvent = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(400, "Invalid event id");
+    }
+    const event = await Event.findById(id);
+    if (!event) throw new ApiError(404, "Event not found");
+    if(event.organizer._id.toString() !== req.organizer._id.toString()){
+        throw new ApiError(403, "You are not authorized to delete this event");
+    }
+    const deletedEvent = await Event.findByIdAndDelete(id);
+    if (!deletedEvent) throw new ApiError(400, "Event not deleted");
+    res.status(200).json(new ApiResponse(200, event, "Event deleted"));
+});
+
+export { createEvent, getOrganizerEvents, getEventById, updateEvent, deleteEvent};
