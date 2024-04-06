@@ -119,4 +119,22 @@ const getEventById = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, event, "Event retrieved"));
 });
 
-export { createEvent, getOrganizerEvents, getEventById};
+const updateEvent = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { name, description, duration, status, sponsors, sessions } = req.body;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(400, "Invalid event id");
+    }
+    const event = await Event.findById(id);
+    if (!event) throw new ApiError(404, "Event not found");
+    event.name = name || event.name;
+    event.description = description || event.description;
+    event.duration = duration || event.duration;
+    event.status = status || event.status;
+    event.sponsors = sponsors || event.sponsors;
+    event.sessions = sessions || event.sessions;
+    await event.save();
+    res.status(200).json(new ApiResponse(200, event, "Event updated"));
+});
+
+export { createEvent, getOrganizerEvents, getEventById, updateEvent};
