@@ -103,4 +103,20 @@ const getOrganizerEvents = asyncHandler(async (req, res) => {
     if(!events) throw new ApiError(404, "No events found");
     res.status(200).json(new ApiResponse(200, events, "Events retrieved"));
   });
-export { createEvent, getOrganizerEvents};
+
+const getEventById = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    // console.log("id: ",id)
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new ApiError(400, "Invalid event id");
+    }
+    const event = await Event.findById(id)
+    .populate({
+        path: "sponsors sessions organizer",
+        select: "-password -refreshToken" // Exclude password and refreshToken fields
+    });
+    if (!event) throw new ApiError(404, "Event not found");
+    res.status(200).json(new ApiResponse(200, event, "Event retrieved"));
+});
+
+export { createEvent, getOrganizerEvents, getEventById};
