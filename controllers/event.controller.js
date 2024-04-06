@@ -126,7 +126,11 @@ const updateEvent = asyncHandler(async (req, res) => {
         throw new ApiError(400, "Invalid event id");
     }
     const event = await Event.findById(id);
+
     if (!event) throw new ApiError(404, "Event not found");
+    if(event.organizer._id.toString() !== req.organizer._id.toString()){
+        throw new ApiError(403, "You are not authorized to update this event");
+    }
     event.name = name || event.name;
     event.description = description || event.description;
     event.duration = duration || event.duration;
