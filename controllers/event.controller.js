@@ -93,5 +93,14 @@ const createEvent = asyncHandler(async (req, res) => {
         // console.log("Id: ",sessionIds[0])
         return sessionIds;
     };
-    
-export { createEvent };
+
+const getOrganizerEvents = asyncHandler(async (req, res) => {
+    const events = await Event.find({organizer:req.organizer?._id})
+    .populate({
+        path: "sponsors sessions organizer",
+        select: "-password -refreshToken" // Exclude password and refreshToken fields
+    });
+    if(!events) throw new ApiError(404, "No events found");
+    res.status(200).json(new ApiResponse(200, events, "Events retrieved"));
+  });
+export { createEvent, getOrganizerEvents};
