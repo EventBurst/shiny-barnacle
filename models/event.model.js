@@ -16,7 +16,7 @@ const eventSchema = new Schema(
       required: true,
     },
     status: {
-      type: Enum,
+      type: String,
       required: true,
       enum: ["draft", "published", "cancelled"],
     },

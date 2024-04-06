@@ -21,6 +21,11 @@ const createSponsor = asyncHandler(async (req, res, next) => {
       ) {
         throw new ApiError(400, "All Fields are required");
       }
+      const find = await Sponsor.findOne({ email });
+
+      if (find) {
+        return res.status(200).json(new ApiResponse(200, find, "Sponsor found"));
+      }
   const sponsor = await Sponsor.create(req.body);
   if (!sponsor) {
     return next(new ApiError("Sponsor could not be created", 400));
