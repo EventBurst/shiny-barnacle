@@ -18,4 +18,5 @@ router.put('/update/:id',verifyJWT,updateEvent);
 // delete event by id
 router.delete('/delete/:id',verifyJWT,deleteEvent);
 
+// export router
 export default router;
