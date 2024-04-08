@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import eventRoutes from "./routes/event.routes.js";
 // Routes
 import organizerRoutes from "./routes/organizer.routes.js";
 import speakerRoutes from "./routes/speaker.routes.js";
@@ -35,6 +35,7 @@ app.use("/api/shiny-barnacle/speaker", speakerRoutes);
 app.use("/api/shiny-barnacle/agenda", agendaRoutes);
 app.use("/api/shiny-barnacle/sponsor", sponsorRoutes);
 app.use("/api/shiny-barnacle/session", sessionRoutes);
+app.use("/api/shiny-barnacle/event", eventRoutes);
 
 // Swagger UI
 app.use(

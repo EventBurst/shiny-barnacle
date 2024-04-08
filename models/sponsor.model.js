@@ -10,6 +10,7 @@ const sponsorSchema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
   },
   phoneNumber: {
     type: String,

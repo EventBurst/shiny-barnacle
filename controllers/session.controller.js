@@ -28,9 +28,12 @@ const updateSession = asyncHandler(async (req, res) => {
 const createSession = asyncHandler(async (req, res) => {
   const { name, description, speaker, agenda } = req.body;
 
+  // if session exists
+  const sessionExists = await Session.findOne({ name });
+  if (sessionExists) return res.status(200).json(new ApiResponse(200,sessionExists, "Session already exists"));
   // Stringify the speaker data before sending it
   const speakerData = JSON.stringify(speaker);
-
+  
   let speakerId, agendaId;
 
   // Make a POST request to create the speaker
@@ -86,7 +89,7 @@ const createSession = asyncHandler(async (req, res) => {
   if (!session) throw new ApiError(400, "Session was not created");
 
   // Send a success response to the client if every thing is ok
-  res.status(200).json(new ApiResponse(201, "no", "success"));
+  res.status(200).json(new ApiResponse(201, session, "success"));
 });
 
 // Exporting the functions
