@@ -11,7 +11,7 @@ const generateAccessAndRefreshToken = async (organizer) => {
       const refreshToken = organizer.generateRefreshToken();
       const accessToken = organizer.generateAccessToken();
       organizer.refreshToken = refreshToken;
-      await organizer.save({ validateBeforeSave: false });
+      await organizer.save();
       return { accessToken, refreshToken };
     } catch (error) {
      throw new ApiError(500, "Something Went Wrong While Generating Token");
