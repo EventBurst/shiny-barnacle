@@ -98,6 +98,52 @@ components:
         - name
         - description
         - agendaId
+
+    Event:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the event.
+        name:
+          type: string
+          description: The name of the event.
+        description:
+          type: string
+          description: The description of the event.
+        duration:
+          type: number
+          description: The duration of the event.
+        status:
+          type: string
+          description: The status of the event.
+          enum:
+            - draft
+            - published
+            - cancelled
+        sponsors:
+          type: array
+          description: The sponsors associated with the event.
+          items:
+            type: string
+            format: ObjectId
+        sessions:
+          type: array
+          description: The sessions associated with the event.
+          items:
+            type: string
+            format: ObjectId
+        organizer:
+          type: string
+          description: The organizer of the event.
+          format: ObjectId
+      required:
+        - name
+        - description
+        - duration
+        - status
+        - organizer
+
 paths:
   /api/shiny-barnacle/speaker/get-all:
     get:
