@@ -149,6 +149,8 @@ paths:
     get:
       summary: Get all speakers
       description: Retrieve a list of all speakers.
+      tags:
+        - Speaker
       responses:
         "200":
           description: A list of speakers successfully retrieved
@@ -165,6 +167,8 @@ paths:
     post:
       summary: Create a new speaker
       description: Add a new speaker to the system.
+      tags:
+        - Speaker
       requestBody:
         required: true
         content:
@@ -185,6 +189,8 @@ paths:
     put:
       summary: Update a speaker
       description: Update an existing speaker's details.
+      tags:
+        - Speaker
       parameters:
         - in: path
           name: id
@@ -214,6 +220,8 @@ paths:
     delete:
       summary: Delete a speaker
       description: Delete an existing speaker from the system.
+      tags:
+        - Speaker
       parameters:
         - in: path
           name: id
