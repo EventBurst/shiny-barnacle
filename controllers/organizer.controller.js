@@ -11,7 +11,7 @@ const generateAccessAndRefreshToken = async (organizer) => {
       const refreshToken = organizer.generateRefreshToken();
       const accessToken = organizer.generateAccessToken();
       organizer.refreshToken = refreshToken;
-      await organizer.save({ validateBeforeSave: false });
+      await organizer.save();
       return { accessToken, refreshToken };
     } catch (error) {
      throw new ApiError(500, "Something Went Wrong While Generating Token");
@@ -64,8 +64,9 @@ const registerOrganizer = asyncHandler(async (req, res) => {
   // login Organizer
   const loginOrganizer = asyncHandler(async (req, res) => {
     //get Organizer details from frontend
+    console.log("aaagya")
     const { email, password } = req.body;
-  
+   console.log(req.body)
     //validation-not empty
     if ([email, password].some((value) => value.trim() === "")) {
       throw new ApiError(400, "All Fields are required");
@@ -102,7 +103,7 @@ const registerOrganizer = asyncHandler(async (req, res) => {
             .json(
               new ApiResponse(
                 200,
-                { loggedInOrganizer, accessToken, refreshToken },
+                { loggedInOrganizer},
                 "Organizer Logged In Successfully"
               )
             );
@@ -132,6 +133,7 @@ const registerOrganizer = asyncHandler(async (req, res) => {
     const options = {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
     };
     return res
       .status(200)

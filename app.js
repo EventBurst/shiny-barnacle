@@ -31,11 +31,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 // for cookies parsing and setting
 app.use(cookieParser());
-app.use(cors());
-// Define route to serve the index.html file
+//Server Working
 app.get("/", (_, res) => {
   res.sendFile(path.join(__dirname, "index.html")); // Send the index.html file
 });
+
+app.use(
+  cors({
+    origin: "http://localhost:5265", // Change this to your actual client's origin
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
 
 //Routes
 app.use("/api/shiny-barnacle/organizer", organizerRoutes);
