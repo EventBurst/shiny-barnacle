@@ -341,12 +341,17 @@ paths:
     get:
       summary: Get all agendas
       description: Retrieve a list of all agendas.
+      tags:
+        - Agenda
       responses:
         "200":
           description: A list of all agendas
   /api/shiny-barnacle/agenda/create:
     post:
       summary: Create a new agenda
+      description: Add a new agenda to the system.
+      tags:
+        - Agenda
       requestBody:
         required: true
         content:
@@ -361,6 +366,9 @@ paths:
   /api/shiny-barnacle/agenda/update/{id}:
     put:
       summary: Update an agenda
+      description: Update an existing agenda's details.
+      tags:
+        - Agenda
       parameters:
         - in: path
           name: id
@@ -383,6 +391,9 @@ paths:
   /api/shiny-barnacle/agenda/delete/{id}:
     delete:
       summary: Delete an agenda
+      description: Delete an existing agenda from the system.
+      tags:
+        - Agenda
       parameters:
         - in: path
           name: id
