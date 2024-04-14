@@ -488,6 +488,8 @@ paths:
     post:
       summary: Create a new event
       description: Create a new event in the system.
+      tags:
+        - Event
       requestBody:
         required: true
         content:
@@ -504,6 +506,8 @@ paths:
     get:
       summary: Get events created by organizer
       description: Retrieve a list of events created by the organizer.
+      tags:
+        - Event
       responses:
         "200":
           description: A list of events created by the organizer
@@ -514,6 +518,8 @@ paths:
     get:
       summary: Get event by ID
       description: Retrieve event details by its ID.
+      tags:
+        - Event
       parameters:
         - in: path
           name: id
@@ -530,6 +536,8 @@ paths:
     put:
       summary: Update event by ID
       description: Update an existing event's details by its ID.
+      tags:
+        - Event
       parameters:
         - in: path
           name: id
@@ -554,6 +562,8 @@ paths:
     delete:
       summary: Delete event by ID
       description: Delete an existing event from the system by its ID.
+      tags:
+        - Event
       parameters:
         - in: path
           name: id
