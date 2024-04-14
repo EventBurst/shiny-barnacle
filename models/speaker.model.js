@@ -15,4 +15,3 @@ const speakerSchema = new Schema({
 });
 
 export const Speaker = mongoose.model("Speaker", speakerSchema);
-

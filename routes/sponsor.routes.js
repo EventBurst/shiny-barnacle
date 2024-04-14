@@ -1,6 +1,11 @@
-import {Router} from 'express';
-import { createSponsor, deleteSponsor, getAllSponsors, updateSponsor } from '../controllers/sponsors.controller.js';
-const router=Router();
+import { Router } from "express";
+import {
+  createSponsor,
+  deleteSponsor,
+  getAllSponsors,
+  updateSponsor,
+} from "../controllers/sponsors.controller.js";
+const router = Router();
 
 //Routes
 

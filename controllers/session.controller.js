@@ -30,10 +30,13 @@ const createSession = asyncHandler(async (req, res) => {
 
   // if session exists
   const sessionExists = await Session.findOne({ name });
-  if (sessionExists) return res.status(200).json(new ApiResponse(200,sessionExists, "Session already exists"));
+  if (sessionExists)
+    return res
+      .status(200)
+      .json(new ApiResponse(200, sessionExists, "Session already exists"));
   // Stringify the speaker data before sending it
   const speakerData = JSON.stringify(speaker);
-  
+
   let speakerId, agendaId;
 
   // Make a POST request to create the speaker

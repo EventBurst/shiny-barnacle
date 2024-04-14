@@ -26,7 +26,7 @@ const organizerSchema = new Schema(
   { timestamps: true }
 );
 organizerSchema.pre("save", async function (next) {
-    // Hash the password before saving the organizer model only when the password is modified or new
+  // Hash the password before saving the organizer model only when the password is modified or new
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);
   }
@@ -36,7 +36,7 @@ organizerSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 organizerSchema.methods.generateAccessToken = function () {
- return jwt.sign(
+  return jwt.sign(
     {
       _id: this._id,
       email: this.email,
@@ -47,7 +47,7 @@ organizerSchema.methods.generateAccessToken = function () {
   );
 };
 organizerSchema.methods.generateRefreshToken = function () {
- return jwt.sign(
+  return jwt.sign(
     {
       _id: this._id,
     },
