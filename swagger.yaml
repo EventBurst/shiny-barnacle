@@ -245,6 +245,8 @@ paths:
     get:
       summary: Get all sponsors
       description: Retrieve a list of all sponsors.
+      tags:
+        - Sponsor
       responses:
         "200":
           description: A list of sponsors successfully retrieved
@@ -261,6 +263,8 @@ paths:
     post:
       summary: Create a new sponsor
       description: Add a new sponsor to the system.
+      tags:
+        - Sponsor
       requestBody:
         required: true
         content:
@@ -281,6 +285,8 @@ paths:
     put:
       summary: Update a sponsor
       description: Update an existing sponsor's details.
+      tags:
+        - Sponsor
       parameters:
         - in: path
           name: id
@@ -310,6 +316,8 @@ paths:
     delete:
       summary: Delete a sponsor
       description: Delete an existing sponsor from the system.
+      tags:
+        - Sponsor
       parameters:
         - in: path
           name: id
@@ -332,6 +340,7 @@ paths:
   /api/shiny-barnacle/agenda/get-all:
     get:
       summary: Get all agendas
+      description: Retrieve a list of all agendas.
       responses:
         "200":
           description: A list of all agendas
