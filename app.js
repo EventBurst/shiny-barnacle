@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import eventRoutes from "./routes/event.routes.js";
+
 // Routes
 import organizerRoutes from "./routes/organizer.routes.js";
 import speakerRoutes from "./routes/speaker.routes.js";
@@ -12,7 +13,14 @@ import sessionRoutes from "./routes/session.routes.js";
 // Swagger UI
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import { fileURLToPath } from "url";
+
+// Path
+import path from "path";
 const swaggerDocument = YAML.load("./swagger.yaml");
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 // for body parser
@@ -25,7 +33,7 @@ app.use(express.static("public"));
 app.use(cookieParser());
 //Server Working
 app.get("/", (_, res) => {
-  res.send("HLO");
+  res.sendFile(path.join(__dirname, "index.html")); // Send the index.html file
 });
 
 app.use(
