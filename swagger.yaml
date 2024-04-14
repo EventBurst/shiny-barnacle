@@ -443,3 +443,88 @@ paths:
           description: Bad request
         "404":
           description: Session not found
+          
+  /api/shiny-barnacle/event/create:
+    post:
+      summary: Create a new event
+      description: Create a new event in the system.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: Event created successfully
+        "401":
+          description: Unauthorized - JWT token is missing or invalid
+
+  /api/shiny-barnacle/event/get-organizer-events:
+    get:
+      summary: Get events created by organizer
+      description: Retrieve a list of events created by the organizer.
+      responses:
+        "200":
+          description: A list of events created by the organizer
+        "401":
+          description: Unauthorized - JWT token is missing or invalid
+
+  /api/shiny-barnacle/event/get/{id}:
+    get:
+      summary: Get event by ID
+      description: Retrieve event details by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event details retrieved successfully
+        "404":
+          description: Event not found
+
+  /api/shiny-barnacle/event/update/{id}:
+    put:
+      summary: Update event by ID
+      description: Update an existing event's details by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Event"
+      responses:
+        "200":
+          description: Event updated successfully
+        "401":
+          description: Unauthorized - JWT token is missing or invalid
+        "404":
+          description: Event not found
+
+  /api/shiny-barnacle/event/delete/{id}:
+    delete:
+      summary: Delete event by ID
+      description: Delete an existing event from the system by its ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Event deleted successfully
+        "401":
+          description: Unauthorized - JWT token is missing or invalid
+        "404":
+          description: Event not found
+
