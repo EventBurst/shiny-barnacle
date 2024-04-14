@@ -75,6 +75,29 @@ components:
           format: date-time
           description: The end time of the agenda.
 
+    Session:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: The unique identifier of the session.
+        speakerId:
+          type: string
+          description: The ID of the speaker associated with the session.
+        name:
+          type: string
+          description: The name of the session.
+        description:
+          type: string
+          description: The description of the session.
+        agendaId:
+          type: string
+          description: The ID of the agenda associated with the session.
+      required:
+        - speakerId
+        - name
+        - description
+        - agendaId
 paths:
   /api/shiny-barnacle/speaker/get-all:
     get:
