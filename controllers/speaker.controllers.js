@@ -7,15 +7,15 @@ import mongoose from "mongoose";
 //get all Speakers
 const getSpeakers = asyncHandler(async (req, res) => {
   const speakers = await Speaker.find();
-  if (!speakers) throw new ApiError(404, "No Speakers Found");
+  if (!speakers) throw new ApiError("No Speakers Found", 404);
   return res
     .status(200)
-    .json(new ApiResponse(200, speakers, "Speakers retrieved successfully"));
+    .json(new ApiResponse("Speakers retrieved successfully", speakers));
 });
 
 // create a new Speaker
 const createSpeaker = asyncHandler(async (req, res) => {
-  const { name, email, phoneNumber } = req.body;
+  const { Name: name, Email: email, PhoneNumber: phoneNumber } = req.body;
   if ([name, email, phoneNumber].some((value) => value.trim() === "")) {
     throw new ApiError(400, "All Fields are required");
   }
@@ -26,12 +26,13 @@ const createSpeaker = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, find, "Speaker found"));
   }
 
-  const speaker = await Speaker.create(req.body);
+  const speaker = await Speaker.create({ name, email, phoneNumber });
   if (!speaker) throw new ApiError(400, "Speaker could not be created");
   return res
     .status(201)
     .json(new ApiResponse(201, speaker, "Speaker created successfully"));
 });
+
 // update a Speaker
 const updateSpeaker = asyncHandler(async (req, res) => {
   const { name, email, phoneNumber } = req.body;
@@ -51,7 +52,16 @@ const updateSpeaker = asyncHandler(async (req, res) => {
 
 // delete a Speaker
 const deleteSpeaker = asyncHandler(async (req, res) => {
-  const speaker = await Speaker.findByIdAndDelete(req.params.id);
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    throw new ApiError(400, "Invalid Speaker ID");
+  }
+  const { id } = req.params;
+  const speaker = await Speaker.find({ speakerId: id });
+
+  if (speaker) {
+    await Speaker.deleteOne({ speakerId: id });
+  }
+
   if (!speaker) throw new ApiError(400, "Speaker could not be deleted");
   return res
     .status(200)

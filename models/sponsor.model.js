@@ -31,7 +31,6 @@ const sponsorSchema = new Schema({
   },
 });
 
-
 // Create the Sponsor model
 const Sponsor = model("Sponsor", sponsorSchema);
 

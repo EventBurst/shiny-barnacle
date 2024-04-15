@@ -1,5 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 const speakerSchema = new Schema({
+  speakerId: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+    required: true,
+  },
   name: {
     type: String,
     required: true,

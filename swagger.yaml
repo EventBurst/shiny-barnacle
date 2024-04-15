@@ -258,7 +258,7 @@ paths:
                   $ref: "#/components/schemas/Sponsor"
         "404":
           description: No sponsors found
-  
+
   /api/shiny-barnacle/sponsor/get/{id}:
     get:
       summary: Get a sponsor

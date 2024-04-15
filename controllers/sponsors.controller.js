@@ -16,10 +16,24 @@ const getAllSponsors = asyncHandler(async (req, res, next) => {
 });
 
 const createSponsor = asyncHandler(async (req, res, next) => {
-  const { Name, Email, PhoneNumber: phoneNumber, Address, Contribution } = req.body; // Renamed PhoneNumber to phoneNumber
+  const {
+    Name,
+    Email,
+    PhoneNumber: phoneNumber,
+    Address,
+    Contribution,
+  } = req.body; // Renamed PhoneNumber to phoneNumber
   console.log(req.body);
   // Check if any of the required fields are empty or undefined
-  if (!Name || !Email || !phoneNumber || !Address || !Contribution || [Name, Email, phoneNumber, Address].some((value) => !value.trim())) { // Adjusted for phoneNumber
+  if (
+    !Name ||
+    !Email ||
+    !phoneNumber ||
+    !Address ||
+    !Contribution ||
+    [Name, Email, phoneNumber, Address].some((value) => !value.trim())
+  ) {
+    // Adjusted for phoneNumber
     throw new ApiError(400, "All Fields are required");
   }
 
@@ -28,7 +42,13 @@ const createSponsor = asyncHandler(async (req, res, next) => {
   if (find) {
     return res.status(200).json(new ApiResponse(200, find, "Sponsor found"));
   }
-  const sponsor = await Sponsor.create({ name: Name, email: Email, phoneNumber, address: Address, contribution: Contribution }); // Adjusted for phoneNumber
+  const sponsor = await Sponsor.create({
+    name: Name,
+    email: Email,
+    phoneNumber,
+    address: Address,
+    contribution: Contribution,
+  }); // Adjusted for phoneNumber
 
   console.log(sponsor);
   if (!sponsor) {
@@ -91,6 +111,11 @@ const getSponsorById = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse("Sponsor fetched successfully", sponsor));
 });
 
-
 // Exporting the functions
-export { getAllSponsors, createSponsor, updateSponsor, deleteSponsor, getSponsorById };
+export {
+  getAllSponsors,
+  createSponsor,
+  updateSponsor,
+  deleteSponsor,
+  getSponsorById,
+};
