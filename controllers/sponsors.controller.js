@@ -61,13 +61,36 @@ const createSponsor = asyncHandler(async (req, res, next) => {
 
 // Update a sponsor
 const updateSponsor = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
+  const {
+    Name: name,
+    Email: email,
+    PhoneNumber: phoneNumber,
+    Address: address,
+    Contribution: contribution,
+    SponsorId: id,
+  } = req.body;
+  console.log(id);
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return next(new ApiError("Invalid Sponsor ID", 400));
   }
-  const sponsor = await Sponsor.findByIdAndUpdate(id, req.body, {
-    new: true,
-  });
+
+  const sponsor = await Sponsor.findOne({ sponsorId: id });
+
+  if (sponsor) {
+    await Sponsor.updateOne(
+      { sponsorId: id },
+      {
+        $set: {
+          name,
+          email,
+          phoneNumber,
+          address,
+          contribution,
+        },
+      }
+    );
+  }
   if (!sponsor) {
     return next(new ApiError("Sponsor not found", 404));
   }

@@ -35,7 +35,8 @@ const createSpeaker = asyncHandler(async (req, res) => {
 
 // update a Speaker
 const updateSpeaker = asyncHandler(async (req, res) => {
-  const { name, email, phoneNumber } = req.body;
+  const { Name: name, Email: email, PhoneNumber: phoneNumber } = req.body;
+
   if ([name, email, phoneNumber].some((value) => value.trim() === "")) {
     throw new ApiError(400, "All Fields are required");
   }
