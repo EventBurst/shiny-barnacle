@@ -13,6 +13,23 @@ const getSpeakers = asyncHandler(async (req, res) => {
     .json(new ApiResponse("Speakers retrieved successfully", speakers));
 });
 
+//get speaker by id
+const getSpeakerById = asyncHandler(async (req, res) => {
+  
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return next(new ApiError("Invalid Speaker ID", 400));
+  }
+
+  const speaker = await Speaker.findOne({ speakerId: req.params.id });
+
+  console.log("", speaker);
+
+  if (!speaker) throw new ApiError("Speaker not found", 404);
+  return res
+    .status(200)
+    .json(new ApiResponse("Speaker retrieved successfully", speaker));
+})
+
 // create a new Speaker
 const createSpeaker = asyncHandler(async (req, res) => {
   const { Name: name, Email: email, PhoneNumber: phoneNumber } = req.body;
@@ -53,20 +70,25 @@ const updateSpeaker = asyncHandler(async (req, res) => {
 
 // delete a Speaker
 const deleteSpeaker = asyncHandler(async (req, res) => {
-  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid Speaker ID");
   }
-  const { id } = req.params;
-  const speaker = await Speaker.find({ speakerId: id });
 
-  if (speaker) {
-    await Speaker.deleteOne({ speakerId: id });
+  const speaker = await Speaker.findOne({ speakerId: id });
+
+  if (!speaker) 
+  {
+    throw new ApiError(404, "Speaker not found");
   }
 
-  if (!speaker) throw new ApiError(400, "Speaker could not be deleted");
+  // Delete the Speaker
+  await Speaker.deleteOne({ speakerId: id });
+
   return res
     .status(200)
     .json(new ApiResponse(200, speaker, "Speaker deleted successfully"));
 });
 // Exporting the functions
-export { getSpeakers, createSpeaker, updateSpeaker, deleteSpeaker };
+export { getSpeakers, createSpeaker, updateSpeaker, deleteSpeaker, getSpeakerById };

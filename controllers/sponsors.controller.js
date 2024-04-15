@@ -107,8 +107,10 @@ const deleteSponsor = asyncHandler(async (req, res, next) => {
   }
 
   const sponsor = await Sponsor.find({ sponsorId: id });
+
+  console.log(sponsor);
   if (!sponsor) {
-    return next(new ApiError("Sponsor not found", 404));
+ throw new ApiError("Sponsor not found", 404);
   }
 
   await Sponsor.deleteOne({ sponsorId: id });

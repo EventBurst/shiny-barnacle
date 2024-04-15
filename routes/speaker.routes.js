@@ -4,11 +4,15 @@ import {
   deleteSpeaker,
   getSpeakers,
   updateSpeaker,
+  getSpeakerById,
 } from "../controllers/speaker.controllers.js";
 const router = Router();
 // Importing the controller
 
 // Defining the routes
+
+// Get speaker by id
+router.get("/get/:id", getSpeakerById);
 
 // Get all speakers
 //Path: http://localhost:8002/api/shiny-barnacle/speaker/get-all
