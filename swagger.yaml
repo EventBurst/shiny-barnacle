@@ -4,7 +4,7 @@ info:
   description: API documentation for shiny-barnacle
   version: 1.0.0
 servers:
-  - url: http://localhost:8002
+  - url: http://localhost:8004
 
 components:
   schemas:
@@ -258,6 +258,27 @@ paths:
                   $ref: "#/components/schemas/Sponsor"
         "404":
           description: No sponsors found
+  
+  /api/shiny-barnacle/sponsor/get/{id}:
+    get:
+      summary: Get a sponsor
+      description: Retrieve details of a specific sponsor.
+      tags:
+        - Sponsor
+      parameters:
+        - in: path
+          name: id
+          description: ID of the sponsor to retrieve
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Sponsor details successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Sponsor"
 
   /api/shiny-barnacle/sponsor/create:
     post:

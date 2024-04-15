@@ -3,6 +3,11 @@ import { Schema, model } from "mongoose";
 
 // Define the Sponsor schema
 const sponsorSchema = new Schema({
+  sponsorId: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -25,6 +30,7 @@ const sponsorSchema = new Schema({
     required: true,
   },
 });
+
 
 // Create the Sponsor model
 const Sponsor = model("Sponsor", sponsorSchema);

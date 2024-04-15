@@ -15,20 +15,22 @@ const getAllSponsors = asyncHandler(async (req, res, next) => {
     .json(new ApiResponse("Sponsors fetched successfully", sponsors));
 });
 
-// create a new sponsor
 const createSponsor = asyncHandler(async (req, res, next) => {
-  const { name, email, phoneNumber, address, contribution } = req.body;
-  if (
-    [name, email, phoneNumber, address].some((value) => value.trim() === "")
-  ) {
+  const { Name, Email, PhoneNumber: phoneNumber, Address, Contribution } = req.body; // Renamed PhoneNumber to phoneNumber
+  console.log(req.body);
+  // Check if any of the required fields are empty or undefined
+  if (!Name || !Email || !phoneNumber || !Address || !Contribution || [Name, Email, phoneNumber, Address].some((value) => !value.trim())) { // Adjusted for phoneNumber
     throw new ApiError(400, "All Fields are required");
   }
-  const find = await Sponsor.findOne({ email });
+
+  const find = await Sponsor.findOne({ email: Email }); // Adjusted for CamelCase
 
   if (find) {
     return res.status(200).json(new ApiResponse(200, find, "Sponsor found"));
   }
-  const sponsor = await Sponsor.create(req.body);
+  const sponsor = await Sponsor.create({ name: Name, email: Email, phoneNumber, address: Address, contribution: Contribution }); // Adjusted for phoneNumber
+
+  console.log(sponsor);
   if (!sponsor) {
     return next(new ApiError("Sponsor could not be created", 400));
   }
@@ -60,14 +62,35 @@ const deleteSponsor = asyncHandler(async (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return next(new ApiError("Invalid Sponsor ID", 400));
   }
-  const sponsor = await Sponsor.findByIdAndDelete(id);
+
+  const sponsor = await Sponsor.find({ sponsorId: id });
   if (!sponsor) {
     return next(new ApiError("Sponsor not found", 404));
   }
+
+  await Sponsor.deleteOne({ sponsorId: id });
+
   res
     .status(200)
     .json(new ApiResponse("Sponsor deleted successfully", sponsor));
 });
 
+// Get a sponsor by ID
+const getSponsorById = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return next(new ApiError("Invalid Sponsor ID", 400));
+  }
+  const sponsor = await Sponsor.find({ sponsorId: id });
+
+  if (!sponsor) {
+    return next(new ApiError("Sponsor not found", 404));
+  }
+  res
+    .status(200)
+    .json(new ApiResponse("Sponsor fetched successfully", sponsor));
+});
+
+
 // Exporting the functions
-export { getAllSponsors, createSponsor, updateSponsor, deleteSponsor };
+export { getAllSponsors, createSponsor, updateSponsor, deleteSponsor, getSponsorById };

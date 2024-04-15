@@ -4,6 +4,7 @@ import {
   deleteSponsor,
   getAllSponsors,
   updateSponsor,
+  getSponsorById,
 } from "../controllers/sponsors.controller.js";
 const router = Router();
 
@@ -20,6 +21,9 @@ router.put("/update/:id", updateSponsor);
 
 // delete a sponsor
 router.delete("/delete/:id", deleteSponsor);
+
+// get by id
+router.get("/get/:id", getSponsorById);
 
 // Exporting the router
 export default router;
