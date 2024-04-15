@@ -54,18 +54,35 @@ const createSpeaker = asyncHandler(async (req, res) => {
 const updateSpeaker = asyncHandler(async (req, res) => {
   const { Name: name, Email: email, PhoneNumber: phoneNumber } = req.body;
 
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    throw new ApiError(400, "Invalid Speaker ID");
+  }
+
   if ([name, email, phoneNumber].some((value) => value.trim() === "")) {
     throw new ApiError(400, "All Fields are required");
   }
-  const speaker = await Speaker.findByIdAndUpdate(
-    req.params.id,
-    { name, email, phoneNumber },
-    { new: true }
-  );
-  if (!speaker) throw new ApiError(400, "Speaker could not be updated");
+
+  const find = await Speaker.findOne({ speakerId: req.params.id });
+
+  if (find) {
+    await Speaker.updateOne(
+      { speakerId: req.params.id },
+      {
+        $set: {
+          name,
+          email,
+          phoneNumber,
+        },
+      }
+    )
+  }
+
+  if (!find) throw new ApiError(400, "Speaker could not be updated");
   return res
     .status(200)
-    .json(new ApiResponse(200, speaker, "Speaker updated successfully"));
+    .json(new ApiResponse(200, find, "Speaker updated successfully"));
 });
 
 // delete a Speaker
