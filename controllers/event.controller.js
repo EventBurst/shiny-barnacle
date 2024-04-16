@@ -113,7 +113,14 @@ const getEventById = asyncHandler(async (req, res) => {
   if (!event) throw new ApiError(404, "Event not found");
   res.status(200).json(new ApiResponse(200, event, "Event retrieved"));
 });
-
+ const getAllEvents = asyncHandler(async (req, res) => {
+  const events = await Event.find().populate({
+    path: "sponsors sessions organizer",
+    select: "-password -refreshToken", // Exclude password and refreshToken fields
+  });
+  if (!events) throw new ApiError(404, "No events found");
+  res.status(200).json(new ApiResponse(200, events, "Events retrieved"));
+});
 const updateEvent = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const { name, description, duration, status, sponsors, sessions } = req.body;
@@ -156,6 +163,7 @@ export {
   createEvent,
   getOrganizerEvents,
   getEventById,
+  getAllEvents,
   updateEvent,
   deleteEvent,
 };

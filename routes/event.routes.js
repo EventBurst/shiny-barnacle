@@ -3,6 +3,7 @@ const router = Router();
 import {
   createEvent,
   deleteEvent,
+  getAllEvents,
   getEventById,
   getOrganizerEvents,
   updateEvent,
@@ -17,6 +18,9 @@ router.get("/get-organizer-events", verifyJWT, getOrganizerEvents);
 
 // get event by id
 router.get("/get/:id", getEventById);
+
+// get all events
+router.get("/get-all", getAllEvents);
 
 // update event by id
 router.put("/update/:id", verifyJWT, updateEvent);
