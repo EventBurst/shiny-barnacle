@@ -8,12 +8,12 @@ import mongoose from "mongoose";
 const getAllAgendas = asyncHandler(async (_, res) => {
   const agendas = await Agenda.find();
   if (!agendas) throw new ApiError(404, "Agenda not found");
-  return res.status(200).json(new ApiResponse(200, agendas, "Agendas found"));
+  return res.status(200).json(new ApiResponse("Agendas found", agendas));
 });
 
 // create a new agenda
 const createAgenda = asyncHandler(async (req, res) => {
-  const { name, description, startTime, endTime } = req.body;
+  const { Name: name, Description: description, StartTime: startTime, EndTime: endTime } = req.body;
   if (
     [name, description, startTime, endTime].some((field) => field === undefined)
   ) {
@@ -63,8 +63,17 @@ const updateAgenda = asyncHandler(async (req, res) => {
 
 // delete an agenda
 const deleteAgenda = asyncHandler(async (req, res) => {
-  const agenda = await Agenda.findByIdAndDelete(req.params.id);
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    throw new ApiError(400, "Invalid Agenda ID");
+  }
+  const { id } = req.params;
+  const agenda = await Agenda.find({ agendaId: id });
   if (!agenda) throw new ApiError(404, "Agenda not found");
+
+  if (agenda) {
+    await Agenda.deleteOne({ agendaId: id });  
+  }
+
   return res.status(200).json(new ApiResponse(200, agenda, "Agenda deleted"));
 });
 

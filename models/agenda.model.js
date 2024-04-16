@@ -1,6 +1,11 @@
 import mongoose, { Schema } from "mongoose";
 const agendaSchema = new Schema(
   {
+    agendaId: {
+      type: Schema.Types.ObjectId,
+      auto: true,
+      required: true,
+    },
     name: {
       type: String,
       required: true,
