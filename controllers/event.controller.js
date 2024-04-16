@@ -113,7 +113,7 @@ const getEventById = asyncHandler(async (req, res) => {
   if (!event) throw new ApiError(404, "Event not found");
   res.status(200).json(new ApiResponse(200, event, "Event retrieved"));
 });
- const getAllEvents = asyncHandler(async (req, res) => {
+const getAllEvents = asyncHandler(async (req, res) => {
   const events = await Event.find().populate({
     path: "sponsors sessions organizer",
     select: "-password -refreshToken", // Exclude password and refreshToken fields
@@ -121,27 +121,40 @@ const getEventById = asyncHandler(async (req, res) => {
   if (!events) throw new ApiError(404, "No events found");
   res.status(200).json(new ApiResponse(200, events, "Events retrieved"));
 });
+
 const updateEvent = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const { name, description, duration, status, sponsors, sessions } = req.body;
+  const {Name: name,Description: description,Duration: duration,Status: status, Sposnors: sponsors,Sessions: sessions } = req.body;
+
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid event id");
   }
-  const event = await Event.findById(id);
 
-  if (!event) throw new ApiError(404, "Event not found");
+  const event = await Event.findById(id);
+  console.log("Event:", event);
+
+  if (!event) {
+    throw new ApiError(404, "Event not found");
+  }
+
   if (event.organizer._id.toString() !== req.organizer._id.toString()) {
     throw new ApiError(403, "You are not authorized to update this event");
   }
-  event.name = name || event.name;
-  event.description = description || event.description;
-  event.duration = duration || event.duration;
-  event.status = status || event.status;
-  event.sponsors = sponsors || event.sponsors;
-  event.sessions = sessions || event.sessions;
+
+  event.name = name ? name : event.name;
+  event.description = description ? description : event.description;
+  event.duration = duration ? duration : event.duration;
+  event.status = status ? status : event.status;
+  event.sponsors = sponsors ? sponsors : event.sponsors;
+  event.sessions = sessions ? sessions : event.sessions;
+
+  console.log("Updated Event:", event);
+
   await event.save();
+
   res.status(200).json(new ApiResponse(200, event, "Event updated"));
 });
+
 
 // delete event
 const deleteEvent = asyncHandler(async (req, res) => {

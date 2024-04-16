@@ -4,9 +4,11 @@ import jwt from "jsonwebtoken";
 import { Organizer } from "../models/organizer.model.js";
 export const verifyJWT = asyncHandler(async (req, res, next) => {
   //we'r using req.header becuase in mobile there is no cookie stored so u have to get it from header
+  // console.log("req",req)
   const token =
     req.cookies?.accessToken ||
     req.header("Authorization")?.replace("Bearer ", "");
+    // console.log("COokies:",token)
   if (!token) throw new ApiError(401, "Unauthorized request");
   const decode = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
   const organizer = await Organizer.findById(decode?._id).select(
