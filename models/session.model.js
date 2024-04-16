@@ -3,6 +3,11 @@ import { Schema, model } from "mongoose";
 
 // Define the Session schema
 const sessionSchema = new Schema({
+  sessionId: {
+    type: Schema.Types.ObjectId,
+    auto: true,
+    required: true,
+  },
   speakerId: {
     type: Schema.Types.ObjectId,
     ref: "Speaker",
