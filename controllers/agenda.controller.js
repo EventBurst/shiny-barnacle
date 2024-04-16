@@ -11,6 +11,18 @@ const getAllAgendas = asyncHandler(async (_, res) => {
   return res.status(200).json(new ApiResponse("Agendas found", agendas));
 });
 
+// get agenda by id
+const getAgendaById = asyncHandler(async (req, res, next) => {
+  
+  if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+    return next(new ApiError("Invalid Agenda ID", 400));
+  }
+
+  const agenda = await Agenda.findOne({ agendaId: req.params.id });
+  if (!agenda) throw new ApiError()
+  return res.status(200).json(new ApiResponse("Agenda found", agenda));
+})
+
 // create a new agenda
 const createAgenda = asyncHandler(async (req, res) => {
   const { Name: name, Description: description, StartTime: startTime, EndTime: endTime } = req.body;
@@ -45,19 +57,28 @@ const createAgenda = asyncHandler(async (req, res) => {
 
 // update an agenda
 const updateAgenda = asyncHandler(async (req, res) => {
-  const { name, description, startTime, endTime } = req.body;
+  const { Name: name, Description: description, StartTime: startTime, EndTime: endTime } = req.body;
   if (
     [name, description, startTime, endTime].some((field) => field === undefined)
   ) {
     throw new ApiError(400, "All fields are required");
   }
 
-  const agenda = await Agenda.findByIdAndUpdate(
-    req.params.id,
-    { name, description, startTime, endTime },
-    { new: true }
-  );
+  const agenda = await Agenda.findOne({ agendaId: req.params.id });
   if (!agenda) throw new ApiError(404, "Agenda not found");
+
+  if (agenda) {
+    await Agenda.updateOne(
+      { agendaId: req.params.id },
+      {
+        name,
+        description,
+        startTime,
+        endTime,
+      }
+    )
+  }
+ 
   return res.status(200).json(new ApiResponse(200, agenda, "Agenda updated"));
 });
 
@@ -78,4 +99,4 @@ const deleteAgenda = asyncHandler(async (req, res) => {
 });
 
 // exporting all the endpoints
-export { getAllAgendas, createAgenda, updateAgenda, deleteAgenda };
+export { getAllAgendas, createAgenda, updateAgenda, deleteAgenda, getAgendaById };
