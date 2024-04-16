@@ -39,7 +39,7 @@ const createSession = asyncHandler(async (req, res) => {
   if (!session) throw new ApiError(400, "Session was not created");
 
   // Send a success response to the client if every thing is ok
-  res.status(200).json(new ApiResponse(201, "hii", "success"));
+  res.status(200).json(new ApiResponse(201, session, "success"));
 });
 
 // Exporting the functions
