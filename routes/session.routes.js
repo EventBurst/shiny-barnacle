@@ -4,6 +4,7 @@ import {
   getAllSessions,
   updateSession,
   deleteSession,
+  getSessionById,
 } from "../controllers/session.controller.js";
 
 const router = Router();
@@ -19,4 +20,7 @@ router.delete("/delete/:id", deleteSession);
 
 // Update a session
 router.put("/update/:id", updateSession);
+
+// Get by id
+router.get("/get/:id", getSessionById);
 export default router;
