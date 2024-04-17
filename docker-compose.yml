@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  shiny-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8004:8004"
+    volumes:
+      - .:/app
+    environment:
+      NODE_ENV: development
